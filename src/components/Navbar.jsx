@@ -11,7 +11,7 @@ const menuItems = [
   'Nouveau look',
 ]
 
-function Home() {
+function Navbar() {
   const [drawerOpen, setDrawerOpen] = useState(false)
 
   return (
@@ -42,9 +42,6 @@ function Home() {
               <div className="brand-icon" />
               <span>StudentDeals</span>
             </div>
-            <div className="search-bar">
-              <input type="text" placeholder="Rechercher un deal..." />
-            </div>
           </div>
 
           <div className="top-actions">
@@ -54,17 +51,10 @@ function Home() {
           </div>
         </header>
 
-        <nav className="tab-nav">
-          {['Pour vous', 'Les + hot', 'Tendance', 'Tous'].map((tab) => (
-            <button key={tab} className="tab-link">
-              {tab}
-            </button>
-          ))}
-        </nav>
       </div>
     </div>
   )
 }
 
-export default Home
+export default Navbar
 

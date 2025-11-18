@@ -1,5 +1,4 @@
 .layout {
-  min-height: 100vh;
   background: linear-gradient(180deg, #f7fbff, #f0f4ff);
   color: #1f2a37;
   position: relative;
@@ -8,7 +7,7 @@
 .app-shell {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 2rem clamp(1rem, 5vw, 3rem) 4rem;
+  padding: 2rem clamp(1rem, 5vw, 3rem) 1rem;
 }
 
 .top-bar {
