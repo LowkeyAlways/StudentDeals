@@ -40,7 +40,9 @@ function Navbar() {
             </button>
             <div className="brand">
               <div className="brand-icon" />
-              <span>StudentDeals</span>
+                <Link to="/">
+                  <span>StudentDeals</span>
+                </Link>
             </div>
           </div>
 
