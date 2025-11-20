@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import Login from './Login'
 
 const menuItems = [
   'Catégories',
@@ -22,6 +23,7 @@ function Navbar() {
     if (!q) return
     navigate(`/search?q=${encodeURIComponent(q)}`)
   }
+  const [loginOpen, setLoginOpen] = useState(false)
 
   return (
     <div className="layout">
@@ -49,7 +51,9 @@ function Navbar() {
             </button>
             <div className="brand">
               <div className="brand-icon" />
-              <span>StudentDeals</span>
+                <Link to="/">
+                  <span>StudentDeals</span>
+                </Link>
             </div>
 
             <form className="search-form" onSubmit={handleSearchSubmit}>
@@ -70,11 +74,15 @@ function Navbar() {
           </div>
 
           <div className="top-actions">
-            <Link to="/connexion" className="ghost-btn">
+            <button className="ghost-btn" onClick={() => setLoginOpen(true)}>
               Connexion ou inscription
-            </Link>
+            </button>
           </div>
         </header>
+
+        {loginOpen && (
+          <Login isModal={true} onClose={() => setLoginOpen(false)} />
+        )}
 
       </div>
     </div>
