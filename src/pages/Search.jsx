@@ -8,7 +8,7 @@ function Search() {
     <div>
       <h1>Résultats de recherche</h1>
       <p>Recherche : <strong>{q}</strong></p>
-      {/* TODO: remplacer ceci par un vrai composant de résultats/filtrage */}
+      {}
     </div>
   )
 }
