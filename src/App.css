@@ -1,7 +1,9 @@
 .layout {
-  background: linear-gradient(180deg, #f7fbff, #f0f4ff);
+  background: linear-gradient(180deg, #a5a9f9, #92b2b9);
   color: #1f2a37;
   position: relative;
+  border-radius: 19px;
+  margin: 1cm 2rem 1rem; 
 }
 
 .app-shell {
@@ -25,7 +27,7 @@
 
 .menu-toggle {
   border: none;
-  background: #ffffff;
+  background: linear-gradient(90deg, #0fb5d4, #5a8dff);
   padding: 0.4rem 0.9rem;
   border-radius: 999px;
   font-weight: 600;
@@ -58,13 +60,19 @@
   box-shadow: 0 15px 35px rgba(15, 23, 42, 0.08);
 }
 
-.search-bar input {
+.left-block .search-form {
+  justify-content: center;
   width: 100%;
-  border: none;
-  background: transparent;
-  font-size: 0.95rem;
-  color: #1f2a37;
 }
+
+.search-form input {
+  width: 100%;
+  max-width: 900px;     /* ← barre élargie */
+  padding: 1.15rem 1.6rem; 
+  font-size: 1.1rem;
+  border-radius: 999px;
+}
+
 
 .search-bar input:focus {
   outline: none;
@@ -84,7 +92,7 @@
   color: #1f2a37;
   text-decoration: none;
   font-weight: 600;
-  background: #fff;
+  background: linear-gradient(90deg, #0fb5d4, #5a8dff);
   box-shadow: 0 12px 30px rgba(31, 42, 55, 0.07);
 }
 
@@ -106,7 +114,6 @@
 .tab-nav {
   display: flex;
   gap: 1rem;
-  /* shift tabs left/right to match deal cards spacing */
   margin: 1.75rem 4rem 0;
   border-bottom: 1px solid #e3e8f4;
 }
@@ -163,7 +170,6 @@
   border: 1px dashed #d7dff1;
 }
 
-/* Enhanced card visuals for user-facing deals */
 .deal-card {
   background: linear-gradient(180deg, #b8caf8, #e1e5f1);
   border: 1px solid #e7eefb;
@@ -238,6 +244,42 @@
 
 .placeholder-line.w55 {
   width: 55%;
+}
+
+/* Footer styles */
+.site-footer {
+  margin-top: 2.5rem;
+  border-top: 1px solid #e7ecf7;
+  color: #556777;
+  background: transparent;
+}
+.footer-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 4rem;
+  display: flex;
+  gap: 2rem;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+.footer-col { min-width: 160px }
+.footer-brand { display:flex; align-items:center; gap:0.6rem; color:#1f2a37 }
+.footer-brand .muted { color:#7a8599; font-size:0.9rem }
+.footer-links a { display:block; color:#556777; text-decoration:none; margin:0.35rem 0 }
+.footer-links strong { display:block; margin-bottom:0.5rem; color:#0f1724 }
+.footer-bottom {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem 4rem;
+  color:#7a8599;
+  font-size:0.9rem;
+  text-align:center;
+}
+
+@media (max-width:720px) {
+  .footer-inner, .footer-bottom { padding: 1rem 1.25rem }
+  .footer-inner { flex-direction: column; gap: 1rem }
 }
 
 .placeholder-tags,
@@ -480,20 +522,25 @@
   display: flex;
   gap: 0.5rem;
   align-items: center;
+  justify-content: center;
   margin-top: 0.35rem;
-  max-width: 560px;
+  max-width: 100%;
+  width: 100%;
 }
 
 .search-form input {
   flex: 1;
-  padding: 0.6rem 0.9rem;
+  padding: 1rem 1.4rem;   /* <-- plus haut + plus large */
+  max-width: 650px;       /* <-- nouvelle largeur max */
   border-radius: 999px;
   border: 1px solid #e3e8f4;
   background: #fff;
-  font-size: 0.95rem;
+  font-size: 1.05rem;     /* <-- plus lisible */
   color: #1f2a37;
   box-shadow: 0 12px 30px rgba(31, 42, 55, 0.06);
+  margin: 0 auto;         /* <-- centre l'input */
 }
+
 
 .search-form input:focus {
   outline: none;
