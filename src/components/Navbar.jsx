@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 const menuItems = [
   'Catégories',
@@ -13,6 +13,15 @@ const menuItems = [
 
 function Navbar() {
   const [drawerOpen, setDrawerOpen] = useState(false)
+  const [searchTerm, setSearchTerm] = useState('')
+  const navigate = useNavigate()
+
+  const handleSearchSubmit = (e) => {
+    e.preventDefault()
+    const q = searchTerm.trim()
+    if (!q) return
+    navigate(`/search?q=${encodeURIComponent(q)}`)
+  }
 
   return (
     <div className="layout">
@@ -42,6 +51,22 @@ function Navbar() {
               <div className="brand-icon" />
               <span>StudentDeals</span>
             </div>
+
+            <form className="search-form" onSubmit={handleSearchSubmit}>
+              <input
+                type="search"
+                placeholder="Rechercher..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                aria-label="Barre de recherche"
+              />
+              <button type="submit" className="icon-btn" aria-label="Rechercher">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+                  <path d="M21 21l-4.35-4.35" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                  <circle cx="11" cy="11" r="6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </button>
+            </form>
           </div>
 
           <div className="top-actions">
