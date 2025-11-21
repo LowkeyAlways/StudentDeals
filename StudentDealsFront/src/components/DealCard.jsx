@@ -47,7 +47,14 @@ function DealCard({
 						<button className="icon" aria-label="save">🔖</button>
 					</div>
 
-					<a className="deal-cta" href={url} target="_blank" rel="noreferrer">Voir le deal</a>
+					<a className="deal-cta" href={url} target="_blank" rel="noreferrer" onClick={() => {
+						// record viewed deal for 'Mes deals visualisés' feature
+						try {
+							const list = JSON.parse(localStorage.getItem('viewedDeals') || '[]')
+							list.unshift({ url, viewedAt: Date.now() })
+							localStorage.setItem('viewedDeals', JSON.stringify(list))
+						} catch {}
+					}}>Voir le deal</a>
 				</div>
 			</div>
 		</article>

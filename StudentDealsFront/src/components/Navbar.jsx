@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import Login from './Login'
 import PostDeal from './PostDeal'
@@ -25,6 +25,10 @@ function Navbar() {
     try { return !!JSON.parse(localStorage.getItem('sd_user')) } catch (e) { return false }
   })
   const [pendingPost, setPendingPost] = useState(false)
+  const [currentUser, setCurrentUser] = useState(() => {
+    try { const s = JSON.parse(localStorage.getItem('sd_user') || 'null'); return s && s.user ? s.user : null } catch { return null }
+  })
+  const [userMenuOpen, setUserMenuOpen] = useState(false)
 
   const handleSearchSubmit = (e) => {
     e.preventDefault()
@@ -129,25 +133,62 @@ function Navbar() {
           </div>
 
           <div className="top-actions">
-            <button className="post-btn" onClick={() => {
-              if (isAuth) {
-                setPostOpen(true)
-              } else {
-                // mark that user wanted to post, then open login
-                setPendingPost(true)
-                setLoginOpen(true)
-              }
-            }}>
-              Poster
-            </button>
+            <div className="auth-block">
+              {!isAuth ? (
+                <>
+                  <button className="ghost-btn" onClick={() => { setLoginOpen(true); /* open login mode */ }}>
+                    Connexion
+                  </button>
 
-            <button className="ghost-btn" onClick={() => { setLoginOpen(true); /* open login mode */ }}>
-              Connexion
-            </button>
+                  <button className="ghost-btn" onClick={() => { setLoginOpen(true); /* open register mode */ setTimeout(() => { const ev = new CustomEvent('open-register'); window.dispatchEvent(ev); }, 0); }}>
+                    S'inscrire
+                  </button>
+                </>
+              ) : (
+                <div style={{ position: 'relative' }}>
+                  <button
+                    className="user-avatar-btn"
+                    onClick={() => setUserMenuOpen((v) => !v)}
+                    aria-label="Mon compte"
+                  >
+                    <div className="user-avatar">{currentUser ? (currentUser.nomUtilisateur ? currentUser.nomUtilisateur.charAt(0).toUpperCase() : 'U') : 'U'}</div>
+                  </button>
 
-            <button className="ghost-btn" onClick={() => { setLoginOpen(true); /* open register mode */ setTimeout(() => { const ev = new CustomEvent('open-register'); window.dispatchEvent(ev); }, 0); }}>
-              S'inscrire
-            </button>
+                  {userMenuOpen && (
+                    <div className="user-menu">
+                      <div className="user-menu-header">
+                        <div className="user-avatar large">{currentUser ? (currentUser.nomUtilisateur ? currentUser.nomUtilisateur.charAt(0).toUpperCase() : 'U') : 'U'}</div>
+                        <div style={{ marginLeft: 10 }}>
+                          <div style={{ fontWeight: 700 }}>{currentUser ? `${currentUser.prenomUtilisateur || ''} ${currentUser.nomUtilisateur || ''}`.trim() : 'Utilisateur'}</div>
+                          <div style={{ fontSize: 12, color: '#7a8599' }}>{currentUser ? currentUser.adresseMail : ''}</div>
+                        </div>
+                      </div>
+                      <button className="user-menu-item" onClick={() => { navigate('/profile'); setUserMenuOpen(false) }}>Mon profil</button>
+                      <button className="user-menu-item" onClick={() => { navigate('/my-posts'); setUserMenuOpen(false) }}>Mes deals postés</button>
+                      <button className="user-menu-item" onClick={() => { navigate('/my-views'); setUserMenuOpen(false) }}>Mes deals visualisés</button>
+                      <hr />
+                      <button className="user-menu-item" onClick={() => { localStorage.removeItem('sd_user'); setIsAuth(false); setCurrentUser(null); setUserMenuOpen(false); navigate('/') }}>Me déconnecter</button>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+
+            <div className="post-header-wrap">
+              <button
+                className="post-header-btn"
+                onClick={() => {
+                  if (isAuth) {
+                    setPostOpen(true)
+                  } else {
+                    setPendingPost(true)
+                    setLoginOpen(true)
+                  }
+                }}
+              >
+                Poster un deal
+              </button>
+            </div>
           </div>
         </header>
 
@@ -169,6 +210,8 @@ function Navbar() {
         {postOpen && (
           <PostDeal onClose={() => setPostOpen(false)} onPosted={(url) => console.log('posted', url)} />
         )}
+
+        {/* removed floating post button: header now contains the post action */}
 
       </div>
     </div>

@@ -2,10 +2,12 @@ package com.example.demo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import com.example.demo.entities.Utilisateur;
 import com.example.demo.services.UtilisateurService;
 
+@CrossOrigin(origins = "http://localhost:5173")
 @RestController
 @RequestMapping("/api/utilisateur")
 public class UtilisateurController {

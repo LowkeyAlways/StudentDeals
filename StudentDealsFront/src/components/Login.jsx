@@ -27,6 +27,8 @@ function Login({ isModal = false, onClose, onLogin, startRegister = false } = {}
   const [adresseMail, setAdresseMail] = useState('')
   const [motDePasse, setMotDePasse] = useState('')
   const [branche, setBranche] = useState('Ressource_humaine')
+  const [loading, setLoading] = useState(false)
+  const [errorMsg, setErrorMsg] = useState('')
 
   const content = (
     <div className={`login-card light ${isModal ? 'compact' : ''}`}>
@@ -51,10 +53,11 @@ function Login({ isModal = false, onClose, onLogin, startRegister = false } = {}
 
       <form
         className="login-form"
-        onSubmit={(e) => {
+        onSubmit={async (e) => {
           e.preventDefault()
+          setErrorMsg('')
           if (isRegister) {
-            // En mode inscription : on collecte les champs et on sauvegarde localement
+            setLoading(true)
             const user = {
               nomUtilisateur,
               prenomUtilisateur,
@@ -62,15 +65,37 @@ function Login({ isModal = false, onClose, onLogin, startRegister = false } = {}
               motDePasse,
               branche,
             }
+
             try {
-              localStorage.setItem('sd_user', JSON.stringify({ logged: true, user }))
-            } catch (err) {}
-            onLogin && onLogin(true)
-            onClose && onClose()
+              const res = await fetch('http://localhost:8080/api/utilisateur/save', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(user),
+              })
+
+              if (!res.ok) {
+                const text = await res.text()
+                throw new Error(text || `Erreur ${res.status}`)
+              }
+
+              const saved = await res.json()
+              try {
+                localStorage.setItem('sd_user', JSON.stringify({ logged: true, user: saved }))
+              } catch (err) {}
+              onLogin && onLogin(true)
+              onClose && onClose()
+            } catch (err) {
+              console.error('Inscription failed', err)
+              setErrorMsg('Échec de l\'inscription — vérifie les informations ou le serveur.')
+            } finally {
+              setLoading(false)
+            }
+
             return
           }
 
-          // Mode connexion : comportement existant (demo)
+          // Mode connexion : pour l'instant on garde le comportement local (pas d'endpoint d'authent)
+          // Si tu as un endpoint d'authent, dis-moi lequel (ex: POST /api/utilisateur/login)
           try {
             localStorage.setItem('sd_user', JSON.stringify({ logged: true }))
           } catch (err) {}
@@ -112,9 +137,10 @@ function Login({ isModal = false, onClose, onLogin, startRegister = false } = {}
               </select>
             </label>
 
-            <button type="submit" className="primary-btn wide">
-              S'inscrire
+            <button type="submit" className="primary-btn wide" disabled={loading}>
+              {loading ? 'Patiente...' : "S'inscrire"}
             </button>
+            {errorMsg && <div className="form-error">{errorMsg}</div>}
           </>
         ) : (
           // Formulaire de connexion simplifié (comme avant)

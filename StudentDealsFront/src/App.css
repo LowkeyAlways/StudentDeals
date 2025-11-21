@@ -431,6 +431,144 @@
   .post-btn { padding:0.4rem 0.6rem }
 }
 
+/* Improved PostDeal form styles */
+.postdeal-card h3 { margin-top: 0; margin-bottom: 6px }
+.postdeal-card .muted { color: #7a8599; margin-bottom: 12px }
+.post-form { display:flex; flex-direction:column; gap:12px }
+.post-form label { font-size:0.95rem; color:#5c6580; display:flex; flex-direction:column; gap:6px }
+.post-form textarea { min-height: 100px; padding:0.8rem; border-radius:10px; border:1px solid #e3e8f4; resize:vertical }
+.post-form input[type="text"], .post-form input[type="url"] { padding:0.7rem; border-radius:10px; border:1px solid #e3e8f4 }
+.post-form .primary-btn { background: linear-gradient(120deg,#5a8dff,#68d5ff); color:#fff; border:none; padding:0.7rem 1rem; border-radius:12px; font-weight:700 }
+.post-form .ghost-btn { border-radius:10px; border:1px solid #dfe8f8; padding:0.6rem 0.9rem; background:transparent }
+
+/* Category select styling for PostDeal form */
+.post-form .select-container {
+  position: relative;
+  width: 100%;
+}
+.post-form select {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  border: 1px solid #e3e8f4;
+  border-radius: 10px;
+  padding: 0.7rem 1rem;
+  padding-right: 3rem; /* space for arrow */
+  font-size: 0.95rem;
+  background: linear-gradient(180deg, #ffffff, #f8fbff);
+  background-repeat: no-repeat;
+  background-position: right 0.9rem center;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%235a6ff5' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  cursor: pointer;
+  transition: box-shadow 140ms ease, border-color 140ms ease, transform 140ms ease;
+  box-shadow: 0 8px 30px rgba(90,141,255,0.04);
+}
+.post-form select:focus {
+  outline: none;
+  box-shadow: 0 10px 36px rgba(90,141,255,0.12);
+  border-color: rgba(90,141,255,0.6);
+}
+.post-form option { color: #1f2a37; }
+
+/* If you wrap the select in a label, make spacing consistent */
+.post-form label { font-size:0.95rem; color:#5c6580; display:flex; flex-direction:column; gap:6px }
+
+/* Modal overlay for PostDeal */
+.postdeal-modal {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1200;
+}
+.postdeal-modal .modal-scrim {
+  position: absolute;
+  inset: 0;
+  background: rgba(10, 18, 30, 0.45);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+.postdeal-modal .modal-wrapper {
+  position: relative;
+  z-index: 1201;
+  width: 100%;
+  max-width: 760px;
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.postdeal-card {
+  width: 100%;
+  max-width: 720px;
+}
+
+/* Floating post button bottom-left */
+.floating-post-btn {
+  position: fixed;
+  right: 1rem;
+  bottom: 1rem;
+  z-index: 1300;
+  background: linear-gradient(90deg,#0fb5d4,#5a8dff);
+  color: #fff;
+  border: none;
+  padding: 0.7rem 1rem;
+  border-radius: 999px;
+  box-shadow: 0 12px 30px rgba(15,23,42,0.18);
+  cursor: pointer;
+  font-weight: 700;
+}
+.floating-post-btn:hover { transform: translateY(-2px); }
+
+@media (max-width:720px) {
+  .floating-post-btn { right: 0.75rem; bottom: 0.75rem; padding: 0.6rem 0.9rem }
+}
+
+/* Header auth & post layout */
+.top-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.5rem;
+  /* align this block to the bottom edge of the header */
+  align-self: flex-end;
+}
+.top-actions .auth-block {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+.ghost-btn {
+  background: transparent;
+  border: 1px solid rgba(92,101,128,0.12);
+  padding: 0.45rem 0.7rem;
+  border-radius: 10px;
+  color: #25303f;
+  cursor: pointer;
+  font-weight: 600;
+}
+.ghost-btn:hover { box-shadow: 0 8px 20px rgba(90,141,255,0.06); transform: translateY(-1px) }
+.post-header-wrap { width: 100%; display:flex; justify-content:flex-end; margin-top: 8px }
+.post-header-btn {
+  background: linear-gradient(90deg,#0fb5d4,#5a8dff);
+  color: #fff;
+  border: none;
+  padding: 0.5rem 0.9rem;
+  border-radius: 12px;
+  font-weight: 800;
+  box-shadow: 0 10px 30px rgba(90,141,255,0.12);
+  cursor: pointer;
+}
+.post-header-btn:hover { transform: translateY(-2px); }
+
+@media (max-width:720px) {
+  .top-actions { align-items: flex-end }
+  .auth-block { gap: 0.4rem }
+  .post-header-btn { padding: 0.45rem 0.7rem }
+}
+
+
 .back-link.text {
   display: inline-block;
   color: #5a6ff5;
@@ -794,6 +932,16 @@
   cursor: pointer;
   color: #7a8599;
 }
+
+/* User avatar and dropdown in navbar */
+.user-avatar-btn { border: none; background: transparent; cursor: pointer; padding: 0 }
+.user-avatar { width: 40px; height: 40px; border-radius: 50%; display:flex; align-items:center; justify-content:center; background: linear-gradient(135deg,#68d5ff,#5a8dff); color:#fff; font-weight:700 }
+.user-avatar.large { width: 64px; height: 64px; border-radius: 50%; font-size: 22px }
+.user-menu { position: absolute; right: 0; top: 54px; background: #fff; border-radius: 12px; box-shadow: 0 12px 40px rgba(15,23,42,0.12); width: 220px; padding: 8px; z-index: 80 }
+.user-menu-header { display:flex; align-items:center; padding: 8px; border-bottom: 1px solid #eef2fb; margin-bottom: 6px }
+.user-menu-item { width:100%; text-align:left; border:none; background:transparent; padding: 10px 12px; cursor:pointer; font-weight:600; color:#0f1724 }
+.user-menu-item:hover { background: linear-gradient(90deg,#f6f9ff,#f3f7ff); }
+
 
 @media (max-width: 640px) {
   .login-modal {

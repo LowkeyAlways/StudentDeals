@@ -10,6 +10,7 @@ import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Data
@@ -35,6 +36,7 @@ public class Categories {
 		
 	}
 	@OneToMany(mappedBy = "categorie")
+	@JsonIgnore
 	private Set<Deals> deals;
 
 }

@@ -4,6 +4,9 @@ import Login from './components/Login'
 import Footer from './components/Footer'
 import Home from './pages/Home'
 import Search from './pages/Search'
+import Profile from './pages/Profile'
+import MyPosts from './pages/MyPosts'
+import MyViews from './pages/MyViews'
 import './App.css'
 
 function App() {
@@ -14,6 +17,9 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/search" element={<Search />} />
         <Route path="/connexion" element={<Login />} />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/my-posts" element={<MyPosts />} />
+        <Route path="/my-views" element={<MyViews />} />
       </Routes>
       <Footer />
     </BrowserRouter>

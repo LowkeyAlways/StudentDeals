@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 
 import com.example.demo.entities.Deals;
 import com.example.demo.repositories.DealsRepository;
+import com.example.demo.repositories.CategorieRepository;
+import com.example.demo.entities.Categories;
 
 import jakarta.transaction.Transactional;
 import java.util.List;
@@ -16,8 +18,23 @@ public class DealsServiceImpl implements DealsService {
     @Autowired
     private DealsRepository dealsRepository;
 
+    @Autowired
+    private CategorieRepository categorieRepository;
+
     @Override
     public Deals addDeals(Deals deals) {
+        // If a category id was provided, load the managed Categories entity and set it
+        try {
+            if (deals.getCategorie() != null && deals.getCategorie().getId_categorie() != null) {
+                Long cid = deals.getCategorie().getId_categorie();
+                Categories c = categorieRepository.findById(cid).orElse(null);
+                if (c != null) {
+                    deals.setCategorie(c);
+                }
+            }
+        } catch (Exception e) {
+            // ignore and proceed to save; if category mapping fails, repository may throw
+        }
         return dealsRepository.save(deals);
     }
 
