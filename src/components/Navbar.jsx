@@ -44,39 +44,36 @@ function Navbar() {
       />
 
       <div className="app-shell">
-        <header className="top-bar">
-          <div className="left-block">
+        <header className="top-bar" style={{alignItems: 'center'}}>
+          <div style={{display: 'flex', alignItems: 'center', gap: 12}}>
             <button className="menu-toggle" onClick={() => setDrawerOpen(true)}>
-              Menu
+              ☰
             </button>
+          </div>
+
+          <div style={{textAlign: 'center', flex: 1}}>
             <div className="brand">
               <div className="brand-icon" />
-                <Link to="/">
-                  <span>StudentDeals</span>
-                </Link>
+              <Link to="/">
+                <span>StudentDeals</span>
+              </Link>
             </div>
-
-            <form className="search-form" onSubmit={handleSearchSubmit}>
+            <form className="search-form" onSubmit={handleSearchSubmit} style={{maxWidth: 720, margin: '0.35rem auto'}}>
               <input
                 type="search"
-                placeholder="Rechercher..."
+                placeholder="Rechercher des réductions, e.g. Spotify"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 aria-label="Barre de recherche"
               />
-              <button type="submit" className="icon-btn" aria-label="Rechercher">
-                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
-                  <path d="M21 21l-4.35-4.35" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                  <circle cx="11" cy="11" r="6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-              </button>
             </form>
           </div>
 
-          <div className="top-actions">
+          <div className="top-actions" style={{display: 'flex', alignItems: 'center', gap: 12}}>
             <button className="ghost-btn" onClick={() => setLoginOpen(true)}>
-              Connexion ou inscription
+              Se connecter
             </button>
+            <Link to="/connexion" className="ghost-btn" style={{padding: '0.45rem 0.9rem'}}>Poster</Link>
           </div>
         </header>
 

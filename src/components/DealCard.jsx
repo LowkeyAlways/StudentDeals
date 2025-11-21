@@ -1,4 +1,5 @@
 import React from 'react'
+import { FaRegCommentDots, FaShareAlt, FaBookmark } from 'react-icons/fa'
 
 function DealCard({
 	title = '',
@@ -10,15 +11,21 @@ function DealCard({
 	votes = 0,
 	image = null,
 	url = '#',
+  compact = false,
+  featured = false,
 }) {
 	return (
-		<article className="deal-card">
-			<div className="deal-image">
+		<article className={`deal-card ${compact ? 'compact' : ''} ${featured ? 'featured' : ''}`}>
+				<div className="deal-image">
 				{image ? (
 					<img src={image} alt="thumbnail" />
 				) : (
 					<div className="deal-image-placeholder" />
 				)}
+
+					{discount && (
+						<span className="discount-badge">{discount}</span>
+					)}
 			</div>
 
 			<div className="deal-content">
@@ -42,9 +49,9 @@ function DealCard({
 
 				<div className="deal-actions">
 					<div className="icons">
-						<button className="icon" aria-label="comments">💬</button>
-						<button className="icon" aria-label="share">🔗</button>
-						<button className="icon" aria-label="save">🔖</button>
+						<button className="icon" aria-label="comments"><FaRegCommentDots /></button>
+						<button className="icon" aria-label="share"><FaShareAlt /></button>
+						<button className="icon" aria-label="save"><FaBookmark /></button>
 					</div>
 
 					<a className="deal-cta" href={url} target="_blank" rel="noreferrer">Voir le deal</a>
