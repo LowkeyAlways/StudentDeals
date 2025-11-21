@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import { useEffect } from 'react'
 
-function Login({ isModal = false, onClose } = {}) {
+function Login({ isModal = false, onClose, onLogin } = {}) {
   useEffect(() => {
     if (!isModal) return
     const onKey = (e) => {
@@ -31,7 +31,15 @@ function Login({ isModal = false, onClose } = {}) {
       <h1>Connexion ou inscription</h1>
       <p className="subtitle">Rejoignez la communauté !</p>
 
-      <form className="login-form">
+      <form className="login-form" onSubmit={(e) => {
+        e.preventDefault()
+        // Simple client-side auth flag for demo purposes
+        try {
+          localStorage.setItem('sd_user', JSON.stringify({ logged: true }))
+        } catch (err) {}
+        onLogin && onLogin(true)
+        onClose && onClose()
+      }}>
         <label>
           Nom d’utilisateur ou adresse e-mail
           <input type="text" placeholder="email@exemple.fr" />

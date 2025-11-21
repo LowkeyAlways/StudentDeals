@@ -343,6 +343,35 @@
   color: #1f2a37;
 }
 
+.drawer-menu { padding-top: 0.5rem }
+.drawer-item { display:flex; flex-direction:column }
+.drawer-link {
+  border: none;
+  background: transparent;
+  text-align: left;
+  padding: 0.45rem 0.5rem;
+  font-weight:700;
+  color:#0f1724;
+  cursor:pointer;
+}
+.drawer-link[aria-expanded="true"] { color:#5a8dff }
+.submenu {
+  margin-top: 0.25rem;
+  margin-left: 0.5rem;
+  display:flex;
+  flex-direction:column;
+  gap:0.35rem;
+}
+.drawer-sub-link {
+  border:none;
+  background:transparent;
+  padding:0.35rem 0.5rem;
+  text-align:left;
+  color:#556777;
+  cursor:pointer;
+}
+.drawer-sub-link:hover { color:#0f1724 }
+
 .close-drawer {
   align-self: flex-end;
   border: none;
@@ -382,6 +411,24 @@
   padding: 2.5rem;
   border: 1px solid #e5e9f5;
   box-shadow: 0 30px 80px rgba(15, 23, 42, 0.1);
+}
+
+/* PostDeal modal styles */
+.postdeal-card {
+  width: min(520px, 100%);
+  background: #fff;
+  border-radius: 18px;
+  padding: 1.25rem;
+  border: 1px solid #e5e9f5;
+  box-shadow: 0 30px 80px rgba(15,23,42,0.08);
+}
+.post-form input { width:100%; padding:0.6rem 0.8rem; border-radius:8px; border:1px solid #e3e8f4 }
+.form-error { color:#e03131; margin-top:0.4rem; font-size:0.9rem }
+.post-btn { background: linear-gradient(90deg,#0fb5d4,#5a8dff); color:#fff; border:none; padding:0.45rem 0.8rem; border-radius:10px; cursor:pointer; font-weight:700 }
+
+@media (max-width:720px) {
+  .postdeal-card { width: 100%; padding: 1rem }
+  .post-btn { padding:0.4rem 0.6rem }
 }
 
 .back-link.text {

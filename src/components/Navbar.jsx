@@ -1,21 +1,30 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import Login from './Login'
+import PostDeal from './PostDeal'
 
 const menuItems = [
-  'Catégories',
-  'Codes promo',
-  'Gratuit',
-  'Bons plans',
-  'Discussions',
-  'Club',
-  'Nouveau look',
+  {
+    label: 'Catégories',
+    children: ['High-tech', 'Voyage', 'Meuble', 'Mode', 'Alimentation'],
+  },
+  { label: 'Codes promo' },
+  { label: 'Gratuit' },
+  { label: 'Bons plans' },
+  { label: 'Discussions' },
+  { label: 'Club' },
+  { label: 'Nouveau look' },
 ]
 
 function Navbar() {
   const [drawerOpen, setDrawerOpen] = useState(false)
   const [searchTerm, setSearchTerm] = useState('')
   const navigate = useNavigate()
+  const [postOpen, setPostOpen] = useState(false)
+  const [isAuth, setIsAuth] = useState(() => {
+    try { return !!JSON.parse(localStorage.getItem('sd_user')) } catch (e) { return false }
+  })
+  const [pendingPost, setPendingPost] = useState(false)
 
   const handleSearchSubmit = (e) => {
     e.preventDefault()
@@ -24,6 +33,7 @@ function Navbar() {
     navigate(`/search?q=${encodeURIComponent(q)}`)
   }
   const [loginOpen, setLoginOpen] = useState(false)
+  const [openSubmenu, setOpenSubmenu] = useState(null)
 
   return (
     <div className="layout">
@@ -31,9 +41,54 @@ function Navbar() {
         <button className="close-drawer" onClick={() => setDrawerOpen(false)}>
           Fermer
         </button>
-        <ul>
+        <ul className="drawer-menu">
           {menuItems.map((item) => (
-            <li key={item}>{item}</li>
+            <li key={item.label} className="drawer-item">
+              {item.children ? (
+                <>
+                  <button
+                    className="drawer-link"
+                    aria-expanded={openSubmenu === item.label}
+                    onClick={() => setOpenSubmenu(openSubmenu === item.label ? null : item.label)}
+                  >
+                    {item.label}
+                  </button>
+
+                  {openSubmenu === item.label && (
+                    <ul className="submenu">
+                      {item.children.map((child) => (
+                        <li key={child}>
+                          <button
+                            className="drawer-sub-link"
+                            onClick={() => {
+                              const q = child.trim()
+                              if (q) {
+                                navigate(`/search?q=${encodeURIComponent(q)}`)
+                              }
+                              setDrawerOpen(false)
+                              setOpenSubmenu(null)
+                            }}
+                          >
+                            {child}
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </>
+              ) : (
+                <button
+                  className="drawer-link"
+                  onClick={() => {
+                    const q = item.label
+                    navigate(`/search?q=${encodeURIComponent(q)}`)
+                    setDrawerOpen(false)
+                  }}
+                >
+                  {item.label}
+                </button>
+              )}
+            </li>
           ))}
         </ul>
       </aside>
@@ -74,6 +129,18 @@ function Navbar() {
           </div>
 
           <div className="top-actions">
+            <button className="post-btn" onClick={() => {
+              if (isAuth) {
+                setPostOpen(true)
+              } else {
+                // mark that user wanted to post, then open login
+                setPendingPost(true)
+                setLoginOpen(true)
+              }
+            }}>
+              Poster
+            </button>
+
             <button className="ghost-btn" onClick={() => setLoginOpen(true)}>
               Connexion ou inscription
             </button>
@@ -81,7 +148,22 @@ function Navbar() {
         </header>
 
         {loginOpen && (
-          <Login isModal={true} onClose={() => setLoginOpen(false)} />
+          <Login
+            isModal={true}
+            onClose={() => setLoginOpen(false)}
+            onLogin={() => {
+              setIsAuth(true)
+              // if user clicked Poster while logged out, open PostDeal now
+              if (pendingPost) {
+                setPostOpen(true)
+                setPendingPost(false)
+              }
+            }}
+          />
+        )}
+
+        {postOpen && (
+          <PostDeal onClose={() => setPostOpen(false)} onPosted={(url) => console.log('posted', url)} />
         )}
 
       </div>
