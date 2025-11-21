@@ -1,8 +1,8 @@
 import React from 'react'
+import { useAuth } from '../context/AuthContext'
 
 function Profile() {
-  let user = null
-  try { user = JSON.parse(localStorage.getItem('sd_user') || 'null')?.user } catch { user = null }
+  const { user } = useAuth()
 
   if (!user) {
     return (
@@ -23,7 +23,7 @@ function Profile() {
           <div className="user-avatar large" style={{ width: 96, height: 96, fontSize: 28 }}>{initials}</div>
         </div>
         <div>
-          <div style={{ fontWeight: 700, fontSize: 18 }}>{(user.prenomUtilisateur || '') + ' ' + (user.nomUtilisateur || '')}</div>
+          <div style={{ fontWeight: 700, fontSize: 18 }}>{`${user.prenomUtilisateur || ''} ${user.nomUtilisateur || ''}`.trim()}</div>
           <div style={{ color: '#7a8599', marginTop: 6 }}>{user.adresseMail}</div>
           <div style={{ marginTop: 12 }}><strong>Branche:</strong> {user.branche}</div>
         </div>

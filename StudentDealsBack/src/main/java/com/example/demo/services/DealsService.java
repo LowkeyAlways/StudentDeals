@@ -13,6 +13,8 @@ public interface DealsService {
 
     List<Deals> getDealsByCategorie(Long idCategorie);
 
+    List<Deals> getAllDeals();
+
     void deleteDealsById(Long idDeals);
 
     void deleteDealsByCategorie(Long idCategorie);

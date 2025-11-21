@@ -6,6 +6,7 @@ function PostDeal({ onClose, onPosted } = {}) {
   const [description, setDescription] = useState('')
   const [categories, setCategories] = useState([])
   const [selectedCategory, setSelectedCategory] = useState('')
+  const [imageUrl, setImageUrl] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
@@ -74,6 +75,9 @@ function PostDeal({ onClose, onPosted } = {}) {
     }
 
     const payload = { titre: titre.trim(), description: description.trim(), url: candidate }
+    if (imageUrl.trim()) {
+      payload.imageUrl = imageUrl.trim()
+    }
     if (selectedCategory) {
       payload.categorie = { id_categorie: Number(selectedCategory) }
     }
@@ -93,16 +97,9 @@ function PostDeal({ onClose, onPosted } = {}) {
 
       const saved = await res.json()
 
-      // store locally for quick display and dispatch event
-      try {
-        const list = JSON.parse(localStorage.getItem('postedDeals') || '[]')
-        list.unshift({ url: saved.url || candidate, createdAt: Date.now(), id: saved.id_deals || saved.id })
-        localStorage.setItem('postedDeals', JSON.stringify(list))
-      } catch {}
+      try { window.dispatchEvent(new CustomEvent('sd:posted', { detail: saved })) } catch {}
 
-      try { window.dispatchEvent(new CustomEvent('sd:posted', { detail: saved.url || candidate })) } catch {}
-
-      onPosted && onPosted(saved.url || candidate)
+      onPosted && onPosted(saved)
       onClose && onClose()
     } catch (err) {
       console.error('Post deal failed', err)
@@ -131,22 +128,32 @@ function PostDeal({ onClose, onPosted } = {}) {
               <textarea placeholder="Une courte description (optionnel)" value={description} onChange={(e) => setDescription(e.target.value)} />
             </label>
 
-            <label>
+            <label className="category-field">
               Catégorie
-              <select value={selectedCategory} onChange={(e) => setSelectedCategory(e.target.value)}>
-                {categories && categories.length > 0 ? (
-                  categories.map((c) => (
-                    <option key={c.id_categorie} value={c.id_categorie}>{c.categorie_deals || c.id_categorie}</option>
-                  ))
-                ) : (
-                  <option value="">Aucune catégorie</option>
-                )}
-              </select>
+              <div className="select-container">
+                <select value={selectedCategory} onChange={(e) => setSelectedCategory(e.target.value)}>
+                  {categories && categories.length > 0 ? (
+                    categories.map((c) => (
+                      <option key={c.id_categorie} value={c.id_categorie}>{c.categorie_deals || c.id_categorie}</option>
+                    ))
+                  ) : (
+                    <option value="">Aucune catégorie</option>
+                  )}
+                </select>
+                <span className="select-chevron" aria-hidden="true" />
+              </div>
+              <small className="field-hint">Choisis la catégorie qui décrit le mieux ton deal.</small>
             </label>
 
             <label>
               Lien
               <input type="url" placeholder="https://exemple.com/mon-deal" value={url} onChange={(e) => { setUrl(e.target.value); setError('') }} />
+            </label>
+
+            <label>
+              Image du deal (optionnel)
+              <input type="url" placeholder="https://exemple.com/mon-image.jpg" value={imageUrl} onChange={(e) => setImageUrl(e.target.value)} />
+              <small className="field-hint">Colle l’URL directe de l’image si le site ne fournit pas la bonne miniature.</small>
             </label>
 
             {error && <div className="form-error">{error}</div>}

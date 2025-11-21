@@ -79,10 +79,7 @@ function Login({ isModal = false, onClose, onLogin, startRegister = false } = {}
               }
 
               const saved = await res.json()
-              try {
-                localStorage.setItem('sd_user', JSON.stringify({ logged: true, user: saved }))
-              } catch (err) {}
-              onLogin && onLogin(true)
+              onLogin && onLogin(saved)
               onClose && onClose()
             } catch (err) {
               console.error('Inscription failed', err)
@@ -94,13 +91,32 @@ function Login({ isModal = false, onClose, onLogin, startRegister = false } = {}
             return
           }
 
-          // Mode connexion : pour l'instant on garde le comportement local (pas d'endpoint d'authent)
-          // Si tu as un endpoint d'authent, dis-moi lequel (ex: POST /api/utilisateur/login)
           try {
-            localStorage.setItem('sd_user', JSON.stringify({ logged: true }))
-          } catch (err) {}
-          onLogin && onLogin(true)
-          onClose && onClose()
+            if (!adresseMail || !motDePasse) {
+              setErrorMsg('Renseigne ton email et ton mot de passe.')
+              return
+            }
+            setLoading(true)
+            const res = await fetch('http://localhost:8080/api/utilisateur/login', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ adresseMail, motDePasse }),
+            })
+
+            if (!res.ok) {
+              const text = await res.text()
+              throw new Error(text || `Erreur ${res.status}`)
+            }
+
+            const logged = await res.json()
+            onLogin && onLogin(logged)
+            onClose && onClose()
+          } catch (err) {
+            console.error('Connexion failed', err)
+            setErrorMsg('Identifiants invalides ou serveur indisponible.')
+          } finally {
+            setLoading(false)
+          }
         }}
       >
         {isRegister ? (
@@ -147,17 +163,18 @@ function Login({ isModal = false, onClose, onLogin, startRegister = false } = {}
           <>
             <label>
               Nom d’utilisateur ou adresse e-mail
-              <input type="text" placeholder="email@exemple.fr" />
+              <input type="text" placeholder="email@exemple.fr" value={adresseMail} onChange={(e) => setAdresseMail(e.target.value)} />
             </label>
 
             <label>
               Mot de passe
-              <input type="password" placeholder="Votre mot de passe" />
+              <input type="password" placeholder="Votre mot de passe" value={motDePasse} onChange={(e) => setMotDePasse(e.target.value)} />
             </label>
 
-            <button type="submit" className="primary-btn wide">
-              Continuer
+            <button type="submit" className="primary-btn wide" disabled={loading}>
+              {loading ? 'Connexion...' : 'Continuer'}
             </button>
+            {errorMsg && <div className="form-error">{errorMsg}</div>}
           </>
         )}
       </form>

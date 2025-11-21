@@ -1,7 +1,9 @@
 package com.example.demo.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.example.demo.entities.Utilisateur;
 import com.example.demo.repositories.UtilisateurRepository;
@@ -53,5 +55,14 @@ public class UtilisateurServiceImpl implements UtilisateurService {
     public Utilisateur getUtilisateurById(Long idUtilisateur) {
         return utilisateurRepository.findById(idUtilisateur)
                 .orElseThrow(() -> new RuntimeException("Utilisateur introuvable"));
+    }
+
+    @Override
+    public Utilisateur authenticate(String adresseMail, String motDePasse) {
+        Utilisateur user = utilisateurRepository.findByAdresseMail(adresseMail);
+        if (user == null || user.getMotDePasse() == null || !user.getMotDePasse().equals(motDePasse)) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Identifiants invalides");
+        }
+        return user;
     }
 }

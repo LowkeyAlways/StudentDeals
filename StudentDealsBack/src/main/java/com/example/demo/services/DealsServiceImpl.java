@@ -21,6 +21,9 @@ public class DealsServiceImpl implements DealsService {
     @Autowired
     private CategorieRepository categorieRepository;
 
+    @Autowired
+    private OpenGraphService openGraphService;
+
     @Override
     public Deals addDeals(Deals deals) {
         // If a category id was provided, load the managed Categories entity and set it
@@ -34,6 +37,12 @@ public class DealsServiceImpl implements DealsService {
             }
         } catch (Exception e) {
             // ignore and proceed to save; if category mapping fails, repository may throw
+        }
+        if (deals.getUrl() != null && (deals.getImageUrl() == null || deals.getImageUrl().isBlank())) {
+            String ogImage = openGraphService.extractImageUrl(deals.getUrl());
+            if (ogImage != null) {
+                deals.setImageUrl(ogImage);
+            }
         }
         return dealsRepository.save(deals);
     }
@@ -62,6 +71,11 @@ public class DealsServiceImpl implements DealsService {
                 .stream()
                 .filter(d -> d.getCategorie().getId_categorie().equals(idCategorie))
                 .toList();
+    }
+
+    @Override
+    public List<Deals> getAllDeals() {
+        return dealsRepository.findAll();
     }
 
     @Override

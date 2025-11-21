@@ -1,31 +1,40 @@
-import { useState, useEffect } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import DealCard from '../components/DealCard'
 
-const sample = [ {}, {}, { id: 3 } ]
-
 function Home() {
-  const [posted, setPosted] = useState(() => {
-    try {
-      const list = JSON.parse(localStorage.getItem('postedDeals') || '[]')
-      return Array.isArray(list) ? list : []
-    } catch {
-      return []
-    }
-  })
+  const [deals, setDeals] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState('')
 
-  useEffect(() => {
-    const onPosted = (e) => {
-      try {
-        setPosted((prev) => [ { url: e.detail, createdAt: Date.now() }, ...prev ])
-      } catch {
-        // ignore
+  const fetchDeals = useCallback(async () => {
+    setLoading(true)
+    setError('')
+    try {
+      const res = await fetch('http://localhost:8080/api/deals/all')
+      if (!res.ok) {
+        const text = await res.text()
+        throw new Error(text || `Erreur ${res.status}`)
       }
+      const data = await res.json()
+      setDeals(Array.isArray(data) ? data : [])
+    } catch (err) {
+      console.error('Failed to load deals', err)
+      setError('Impossible de récupérer les deals depuis le serveur.')
+      setDeals([])
+    } finally {
+      setLoading(false)
     }
-    window.addEventListener('sd:posted', onPosted)
-    return () => window.removeEventListener('sd:posted', onPosted)
   }, [])
 
-  const items = posted && posted.length ? posted : sample
+  useEffect(() => {
+    fetchDeals()
+  }, [fetchDeals])
+
+  useEffect(() => {
+    const onPosted = () => fetchDeals()
+    window.addEventListener('sd:posted', onPosted)
+    return () => window.removeEventListener('sd:posted', onPosted)
+  }, [fetchDeals])
 
   return (
     <div>
@@ -37,23 +46,32 @@ function Home() {
         ))}
       </nav>
 
-      <section className="deal-stack">
-        {items.map((d, idx) => {
-          // if posted deals are stored as objects with url and createdAt
-          if (d && d.url) {
-            return (
-              <DealCard
-                key={d.url + d.createdAt}
-                title={''}
-                description={d.url}
-                url={d.url}
-              />
-            )
-          }
+      {loading && (
+        <div style={{ padding: 24 }}>Chargement des deals…</div>
+      )}
 
-          return <DealCard key={d.id || idx} {...d} />
-        })}
-      </section>
+      {error && !loading && (
+        <div style={{ padding: 24, color: '#e03131' }}>{error}</div>
+      )}
+
+      {!loading && !error && deals.length === 0 && (
+        <div style={{ padding: 24 }}>Aucun deal n'a encore été posté.</div>
+      )}
+
+      {!loading && !error && deals.length > 0 && (
+        <section className="deal-stack">
+          {deals.map((deal) => (
+            <DealCard
+              key={deal.id_deals || deal.id || deal.url}
+              title={deal.titre || 'Deal sans titre'}
+              description={deal.description}
+              url={deal.url || '#'}
+              source={deal.categorie?.categorie_deals}
+              imageUrl={deal.imageUrl}
+            />
+          ))}
+        </section>
+      )}
     </div>
   )
 }

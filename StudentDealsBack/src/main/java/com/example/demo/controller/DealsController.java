@@ -32,6 +32,11 @@ public class DealsController {
         return dealsService.getDealsByCategorie(idCategorie);
     }
 
+    @GetMapping("/all")
+    public List<Deals> getAllDeals() {
+        return dealsService.getAllDeals();
+    }
+
     @PutMapping("/update/{idDeals}")
     public Deals updateDeals(@PathVariable Long idDeals, @RequestBody Deals deals) {
         return dealsService.updateDeals(idDeals, deals);

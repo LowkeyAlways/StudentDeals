@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 
 import com.example.demo.entities.Utilisateur;
 import com.example.demo.services.UtilisateurService;
+import com.example.demo.dto.LoginRequest;
 
 @CrossOrigin(origins = "http://localhost:5173")
 @RestController
@@ -39,5 +40,10 @@ public class UtilisateurController {
     public Utilisateur updateUtilisateur(@PathVariable Long idUtilisateur,
                                          @RequestBody Utilisateur utilisateur) {
         return utilisateurService.updateUtilisateur(idUtilisateur, utilisateur);
+    }
+
+    @PostMapping("/login")
+    public Utilisateur login(@RequestBody LoginRequest request) {
+        return utilisateurService.authenticate(request.getAdresseMail(), request.getMotDePasse());
     }
 }

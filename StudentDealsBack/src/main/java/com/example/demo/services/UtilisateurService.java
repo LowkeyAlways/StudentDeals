@@ -13,4 +13,6 @@ public interface UtilisateurService {
     Utilisateur updateUtilisateur(Long idUtilisateur, Utilisateur utilisateur);
 
     Utilisateur getUtilisateurById(Long idUtilisateur);
+
+    Utilisateur authenticate(String adresseMail, String motDePasse);
 }

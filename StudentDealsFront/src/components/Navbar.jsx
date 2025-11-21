@@ -1,7 +1,8 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import Login from './Login'
 import PostDeal from './PostDeal'
+import { useAuth } from '../context/AuthContext'
 
 const menuItems = [
   {
@@ -17,17 +18,12 @@ const menuItems = [
 ]
 
 function Navbar() {
+  const { isAuth, user, login, logout } = useAuth()
   const [drawerOpen, setDrawerOpen] = useState(false)
   const [searchTerm, setSearchTerm] = useState('')
   const navigate = useNavigate()
   const [postOpen, setPostOpen] = useState(false)
-  const [isAuth, setIsAuth] = useState(() => {
-    try { return !!JSON.parse(localStorage.getItem('sd_user')) } catch (e) { return false }
-  })
   const [pendingPost, setPendingPost] = useState(false)
-  const [currentUser, setCurrentUser] = useState(() => {
-    try { const s = JSON.parse(localStorage.getItem('sd_user') || 'null'); return s && s.user ? s.user : null } catch { return null }
-  })
   const [userMenuOpen, setUserMenuOpen] = useState(false)
 
   const handleSearchSubmit = (e) => {
@@ -151,23 +147,23 @@ function Navbar() {
                     onClick={() => setUserMenuOpen((v) => !v)}
                     aria-label="Mon compte"
                   >
-                    <div className="user-avatar">{currentUser ? (currentUser.nomUtilisateur ? currentUser.nomUtilisateur.charAt(0).toUpperCase() : 'U') : 'U'}</div>
+                    <div className="user-avatar">{user ? (user.nomUtilisateur ? user.nomUtilisateur.charAt(0).toUpperCase() : 'U') : 'U'}</div>
                   </button>
 
                   {userMenuOpen && (
                     <div className="user-menu">
                       <div className="user-menu-header">
-                        <div className="user-avatar large">{currentUser ? (currentUser.nomUtilisateur ? currentUser.nomUtilisateur.charAt(0).toUpperCase() : 'U') : 'U'}</div>
+                        <div className="user-avatar large">{user ? (user.nomUtilisateur ? user.nomUtilisateur.charAt(0).toUpperCase() : 'U') : 'U'}</div>
                         <div style={{ marginLeft: 10 }}>
-                          <div style={{ fontWeight: 700 }}>{currentUser ? `${currentUser.prenomUtilisateur || ''} ${currentUser.nomUtilisateur || ''}`.trim() : 'Utilisateur'}</div>
-                          <div style={{ fontSize: 12, color: '#7a8599' }}>{currentUser ? currentUser.adresseMail : ''}</div>
+                          <div style={{ fontWeight: 700 }}>{user ? `${user.prenomUtilisateur || ''} ${user.nomUtilisateur || ''}`.trim() : 'Utilisateur'}</div>
+                          <div style={{ fontSize: 12, color: '#7a8599' }}>{user ? user.adresseMail : ''}</div>
                         </div>
                       </div>
                       <button className="user-menu-item" onClick={() => { navigate('/profile'); setUserMenuOpen(false) }}>Mon profil</button>
                       <button className="user-menu-item" onClick={() => { navigate('/my-posts'); setUserMenuOpen(false) }}>Mes deals postés</button>
                       <button className="user-menu-item" onClick={() => { navigate('/my-views'); setUserMenuOpen(false) }}>Mes deals visualisés</button>
                       <hr />
-                      <button className="user-menu-item" onClick={() => { localStorage.removeItem('sd_user'); setIsAuth(false); setCurrentUser(null); setUserMenuOpen(false); navigate('/') }}>Me déconnecter</button>
+                      <button className="user-menu-item" onClick={() => { logout(); setUserMenuOpen(false); navigate('/') }}>Me déconnecter</button>
                     </div>
                   )}
                 </div>
@@ -196,8 +192,8 @@ function Navbar() {
           <Login
             isModal={true}
             onClose={() => setLoginOpen(false)}
-            onLogin={() => {
-              setIsAuth(true)
+            onLogin={(payload) => {
+              login(payload)
               // if user clicked Poster while logged out, open PostDeal now
               if (pendingPost) {
                 setPostOpen(true)

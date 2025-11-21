@@ -26,6 +26,9 @@ public class Deals {
     @Column(length = 1024)
     private String url;
 
+    @Column(length = 1024)
+    private String imageUrl;
+
     @ManyToMany(mappedBy = "dealsPublies")
     @JsonIgnore
     private Set<Utilisateur> utilisateurs;

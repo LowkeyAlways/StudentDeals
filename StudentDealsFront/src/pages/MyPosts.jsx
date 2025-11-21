@@ -1,28 +1,18 @@
 import React from 'react'
-import DealCard from '../components/DealCard'
+import { useAuth } from '../context/AuthContext'
 
 function MyPosts() {
-  const posted = (() => {
-    try { return JSON.parse(localStorage.getItem('postedDeals') || '[]') } catch { return [] }
-  })()
-
-  if (!posted || posted.length === 0) {
-    return (
-      <div style={{ padding: 24 }}>
-        <h2>Mes deals postés</h2>
-        <p>Vous n'avez pas encore posté de deal.</p>
-      </div>
-    )
-  }
+  const { isAuth } = useAuth()
 
   return (
     <div style={{ padding: 24 }}>
       <h2>Mes deals postés</h2>
-      <section className="deal-stack" style={{ marginTop: 12 }}>
-        {posted.map((p, idx) => (
-          <DealCard key={(p.url||idx)+ (p.createdAt||idx)} title={''} description={p.url} url={p.url} />
-        ))}
-      </section>
+      {!isAuth && (
+        <p>Connecte-toi pour poster des deals et les retrouver ici.</p>
+      )}
+      {isAuth && (
+        <p>Cette section sera synchronisée avec la base de données lorsque l'API permettra de filtrer les deals par utilisateur.</p>
+      )}
     </div>
   )
 }
