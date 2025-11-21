@@ -141,8 +141,12 @@ function Navbar() {
               Poster
             </button>
 
-            <button className="ghost-btn" onClick={() => setLoginOpen(true)}>
-              Connexion ou inscription
+            <button className="ghost-btn" onClick={() => { setLoginOpen(true); /* open login mode */ }}>
+              Connexion
+            </button>
+
+            <button className="ghost-btn" onClick={() => { setLoginOpen(true); /* open register mode */ setTimeout(() => { const ev = new CustomEvent('open-register'); window.dispatchEvent(ev); }, 0); }}>
+              S'inscrire
             </button>
           </div>
         </header>

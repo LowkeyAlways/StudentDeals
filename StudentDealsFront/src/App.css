@@ -477,6 +477,48 @@
   font-size: 0.95rem;
 }
 
+/* Styled select for Branche in the registration form */
+.login-form .select-container {
+  position: relative;
+  width: 100%;
+}
+
+.login-form select {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  border: 1px solid #dfe5f4;
+  border-radius: 14px;
+  padding: 0.75rem 1rem;
+  padding-right: 3rem; /* space for arrow */
+  font-size: 0.95rem;
+  background: linear-gradient(180deg, #ffffff, #f8fbff);
+  background-repeat: no-repeat;
+  background-position: right 0.9rem center;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%235a6ff5' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  cursor: pointer;
+  transition: box-shadow 140ms ease, border-color 140ms ease, transform 140ms ease;
+  box-shadow: 0 8px 30px rgba(90,141,255,0.04);
+}
+
+.login-form select:focus {
+  outline: none;
+  box-shadow: 0 8px 30px rgba(90,141,255,0.12);
+  border-color: rgba(90,141,255,0.6);
+}
+
+.login-form select option {
+  background: #ffffff;
+  color: #0f1724;
+}
+
+.login-form .select-label {
+  display: block;
+  margin-bottom: 0.35rem;
+  font-size: 0.9rem;
+  color: #5c6580;
+}
+
 .primary-btn.wide {
   width: 100%;
   border: none;
