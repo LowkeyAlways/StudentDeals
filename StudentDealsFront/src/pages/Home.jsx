@@ -1,8 +1,9 @@
 import { useEffect, useState, useCallback } from 'react'
+import { sampleDeals } from '../data/sampleDeals.js'
 import DealCard from '../components/DealCard'
 
 function Home() {
-  const [deals, setDeals] = useState([])
+  const [deals, setDeals] = useState(sampleDeals) // Utilisation des données initiales du fichier séparé
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
 
@@ -16,11 +17,11 @@ function Home() {
         throw new Error(text || `Erreur ${res.status}`)
       }
       const data = await res.json()
-      setDeals(Array.isArray(data) ? data : [])
+      setDeals(Array.isArray(data) ? data : sampleDeals) // En cas d'échec de l'API, utiliser les données initiales
     } catch (err) {
       console.error('Failed to load deals', err)
       setError('Impossible de récupérer les deals depuis le serveur.')
-      setDeals([])
+      setDeals(sampleDeals) // En cas d'erreur, utiliser les données initiales
     } finally {
       setLoading(false)
     }
@@ -62,7 +63,7 @@ function Home() {
         <section className="deal-stack">
           {deals.map((deal) => (
             <DealCard
-              key={deal.id_deals || deal.id || deal.url}
+              key={deal.id_deals || deal.id} // Utilisation de l'ID unique, `deal.url` n'est pas une clé stable
               title={deal.titre || 'Deal sans titre'}
               description={deal.description}
               url={deal.url || '#'}
