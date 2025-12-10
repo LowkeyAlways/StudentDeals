@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useState } from 'react'
+import Comments from './Comments'
 
 function DealCard({
 	title = '',
@@ -11,8 +12,10 @@ function DealCard({
 	image = null,
 	imageUrl = null,
 	url = '#',
+		id_deals, // Ajout de l'ID du deal pour les commentaires
 }) {
 	const thumbnail = image || imageUrl
+	const [commentsOpen, setCommentsOpen] = useState(false)
 	return (
 		<article className="deal-card">
 			<div className="deal-image">
@@ -44,15 +47,16 @@ function DealCard({
 
 				<div className="deal-actions">
 					<div className="icons">
-						<button className="icon" aria-label="comments">💬</button>
+						<button className="icon" aria-label="comments" onClick={() => setCommentsOpen(true)}>💬</button>
 						<button className="icon" aria-label="share">🔗</button>
 						<button className="icon" aria-label="save">🔖</button>
 					</div>
 
-					<a className="deal-cta" href={url} target="_blank" rel="noreferrer">Voir le deal</a>
+						<a className="deal-cta" href={url} target="_blank" rel="noreferrer">Voir le deal</a>
+					</div>
 				</div>
-			</div>
-		</article>
+				{commentsOpen && <Comments dealId={id_deals} onClose={() => setCommentsOpen(false)} />}
+			</article>
 	)
 }
 

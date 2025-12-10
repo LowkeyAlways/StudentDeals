@@ -64,6 +64,7 @@ function Home() {
           {deals.map((deal) => (
             <DealCard
               key={deal.id_deals || deal.id} // Utilisation de l'ID unique, `deal.url` n'est pas une clé stable
+              id_deals={deal.id_deals || deal.id} // Passage de l'ID pour les commentaires
               title={deal.titre || 'Deal sans titre'}
               description={deal.description}
               url={deal.url || '#'}
