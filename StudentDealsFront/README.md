@@ -1,16 +1,90 @@
-# React + Vite
+# StudentDeals — Installation & Guide d'utilisation
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Ce document explique comment installer et exécuter le projet StudentDeals, composé d’un frontend React et d’un backend Spring Boot. Il s’adresse à un utilisateur débutant ou intermédiaire qui souhaite lancer le projet sur son propre ordinateur.
 
-Currently, two official plugins are available:
+---------------------------------------------------------------------
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+🔧 PRÉREQUIS
 
-## React Compiler
+Avant de commencer, installez :
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+1. Node.js (pour React)
+Téléchargement : https://nodejs.org  
+Vérification :
+node -v
+npm -v
 
-## Expanding the ESLint configuration
+2. Java 17+ (pour Spring Boot)
+Téléchargement : https://adoptium.net  
+Vérification :
+java -version
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+3. Maven (pour compiler le backend)
+Téléchargement : https://maven.apache.org  
+Vérification :
+mvn -v
+
+4. VS Code (recommandé) avec extensions :
+- Java Extension Pack  
+- Spring Boot Dashboard  
+- Prettier  
+- ESLint  
+
+---------------------------------------------------------------------
+
+📂 STRUCTURE DU PROJET
+
+studentdeals/
+ ├── backend/      → API Spring Boot
+ └── frontend/     → Application React
+
+---------------------------------------------------------------------
+
+🚀 LANCER LE FRONTEND (REACT)
+
+1. Ouvrir un terminal et entrer :
+cd frontend
+
+2. Installer les dépendances :
+npm install
+
+3. Lancer l’application :
+npm run dev
+
+Le site démarre sur :
+http://localhost:5173
+
+---------------------------------------------------------------------
+
+🌐 LANCER LE BACKEND (SPRING BOOT)
+
+1. Aller dans le dossier backend :
+cd backend
+
+2. Compiler le projet :
+mvn clean install
+
+3. Lancer le serveur :
+mvn spring-boot:run
+
+L’API tourne sur :
+http://localhost:8080
+
+---------------------------------------------------------------------
+
+
+🧪 VÉRIFIER QUE TOUT FONCTIONNE
+
+1. Lancer le backend → http://localhost:8080  
+2. Lancer le frontend → http://localhost:5173  
+3. Aller sur la page d’inscription ou connexion  
+4. Tester une inscription  
+5. Vérifier que la réponse s’affiche + logs du backend
+
+
+---------------------------------------------------------------------
+
+✔️ CONCLUSION
+
+Votre environnement React + Spring Boot est maintenant prêt. Vous pouvez développer, tester et étendre le projet. Pour toute demande d’amélioration, utilisez les issues GitHub.
+
