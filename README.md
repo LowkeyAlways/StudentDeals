@@ -81,6 +81,23 @@ http://localhost:8080
 4. Tester une inscription  
 5. Vérifier que la réponse s’affiche + logs du backend
 
+   
+---------------------------------------------------------------------
+
+
+❗ PROBLÈMES COURANTS
+
+• Erreur CORS  
+Ajouter dans votre contrôleur Spring :
+@CrossOrigin(origins = "*")
+
+• fetch failed  
+- Backend non démarré  
+- Mauvaise URL  
+- Port incorrect  
+
+• npm non reconnu  
+Réinstaller Node.js
 
 ---------------------------------------------------------------------
 
